@@ -1,0 +1,139 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{barbosa04}
+R.~M. Barbosa and A.~Goldman.
+\newblock Framework for mobile agents on computer grid environments.
+\newblock In {\em In First International Workshop on MATA}, pages 147--157,
+  2004.
+
+\bibitem{barbosa05}
+R.~M. Barbosa, A.~Goldman, and F.~Kon.
+\newblock A study of mobile agents liveness properties on mobigrid.
+\newblock In {\em In 2nd International Workshop on MATA}, 2005.
+
+\bibitem{cao02}
+J.~Cao, S.~A. Jarvis, S.~Saini, D.~J. Kerbyson, and G.~R. Nudd.
+\newblock Arms: an agent-based resource management system for grid computing.
+\newblock {\em Scientific Programming (Special Issue on Grid Computing)},
+  10(2):135--48, 2002.
+
+\bibitem{cao01}
+J.~Cao, D.~J. Kerbyson, and G.~R. Nudd.
+\newblock High performance service discovery in large-scale multi-agent and
+  mobile-agent systems.
+\newblock In {\em International Journal of Software Engineering and Knowledge
+  Engineering, Special Issue on Multi-Agent Systems and Mobile Agents.},
+  number~11 in 5, pages 621--641. World Scientific Publishing, 2001.
+
+\bibitem{cirne06}
+W.~Cirne, F.~Brasileiro, N.~Andrade, L.~B. Costa, A.~Andrade, R.~Novaes, and
+  M.~Mowbray.
+\newblock Labs of the world, unite!!!
+\newblock {\em Journal of Grid Computing}, 4(3):225--246, September 2006.
+
+\bibitem{climate}
+CPDN.
+\newblock Do it yourself climate prediction.
+\newblock \url{http://www.climateprediction.net}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{distributed}
+distributed.net.
+\newblock General-purpose distributed computing project.
+\newblock \url{http://www.distributed.net}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{fipa}
+F.~for Intellinget Physical~Agents.
+\newblock Fipa - foundation for intellinget physical agents.
+\newblock \url{http://www.fipa.org}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{fukuda03}
+M.~Fukuda, Y.~Tanaka, N.~Suzuki, L.~F. Bic, and S.~Kobayashi.
+\newblock A mobile-agent-based pc grid.
+\newblock {\em Autonomic Computing Workshop, 2003}, pages 142--150, 2003.
+
+\bibitem{mersenne}
+GIMPS.
+\newblock The great internet mersenne prime search.
+\newblock \url{http://www.mersenne.org}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{goldchleger04}
+A.~Goldchleger, F.~Kon, A.~Goldman, M.~Finger, and G.~C. Bezerra.
+\newblock Integrade: object-oriented grid middleware leveraging the idle
+  computing power of desktop machines.
+\newblock {\em Concurrency - Practice and Experience}, 16(5):449--459, 2004.
+
+\bibitem{hwang03}
+S.~Hwang and C.~Kesselman.
+\newblock A flexible framework for fault tolerance in the grid.
+\newblock volume~1, pages 251--272, 2003.
+
+\bibitem{aglets}
+IBM.
+\newblock Aglets software development kit.
+\newblock \url{http://www.trl.ibm.com/aglets/}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{loke03}
+S.~W. Loke.
+\newblock Towards data-parallel skeletons for grid computing: An itinerant
+  mobile agent approach.
+\newblock In {\em Proceedings of the CCGrid'03}, pages 651--652, 2003.
+
+\bibitem{lopes06_2}
+R.~F. Lopes.
+\newblock Mag: uma grade computacional baseada em agentes móveis.
+\newblock Master's thesis, Universidade Federal do Maranhão, São Luís, MA,
+  Brasil, January 2006.
+
+\bibitem{lopes05}
+R.~F. Lopes, F.~J. da~Silva~e Silva, and B.~B. Souza.
+\newblock Mag: A mobile agent based computational grid platform.
+\newblock In {\em Proceedings of CCGrid'05}, LNCS Series, Beijing, November
+  2005. Springer-Verlag.
+
+\bibitem{martino04}
+B.~D. Martino and O.~F. Rana.
+\newblock Grid performance and resource management using mobile agents.
+\newblock In {\em Performance analysis and grid computing}, pages 251--263,
+  Norwell, MA, USA, 2004. Kluwer Academic Publishers.
+
+\bibitem{sallem07}
+M.~A.~S. Sallem, S.~A. de~Sousa, and F.~J. da~Silva~e Silva.
+\newblock Autogrid: Towards an autonomic grid middleware.
+\newblock In {\em 16th IEEE International WETICE}, 2007.
+
+\bibitem{boinc}
+SSL.
+\newblock Boinc: The {B}erkeley open infrastructure for network computing.
+\newblock \url{http://boinc.berkeley.edu/}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{seti}
+SSL.
+\newblock Seti@home: Search for extraterrestrial intelligence at home.
+\newblock \url{http://setiathome.ssl.berkeley.edu/}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{jade}
+TILAB.
+\newblock Jade - java agent development framework.
+\newblock \url{http://www.jade.tilab.com}.
+\newblock Last accessed on 27 Feb, 2008.
+
+\bibitem{brakes00}
+E.~Truyen, B.~Robben, B.~Vanhaute, T.~Coninx, W.~Joosen, and P.~Verbaeten.
+\newblock Portable support for transparent thread migration in java.
+\newblock In {\em In ASA/MA}, LNCS Series, pages 29--43. Springer-Verlag,
+  September 2000.
+
+\bibitem{vinoski97}
+S.~Vinoski.
+\newblock Corba: Integrating diverse applications within distributed
+  heterogeneous environments.
+\newblock {\em IEEE Communications Magazine}, 14:46--55, 1997.
+
+\end{thebibliography}

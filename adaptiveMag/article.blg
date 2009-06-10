@@ -1,0 +1,47 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.6)
+The top-level auxiliary file: article.aux
+The style file: latex8.bst
+Database file #1: bibliografia.bib
+Warning--empty booktitle in hwang03
+You've used 23 entries,
+            2118 wiz_defined-function locations,
+            624 strings with 7336 characters,
+and the built_in function-call counts, 7786 in all, are:
+= -- 769
+> -- 343
+< -- 9
++ -- 141
+- -- 114
+* -- 459
+:= -- 1248
+add.period$ -- 81
+call.type$ -- 23
+change.case$ -- 126
+chr.to.int$ -- 0
+cite$ -- 24
+duplicate$ -- 305
+empty$ -- 648
+format.name$ -- 114
+if$ -- 1699
+int.to.chr$ -- 0
+int.to.str$ -- 23
+missing$ -- 14
+newline$ -- 126
+num.names$ -- 46
+pop$ -- 184
+preamble$ -- 1
+purify$ -- 103
+quote$ -- 0
+skip$ -- 230
+stack$ -- 0
+substring$ -- 406
+swap$ -- 91
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 92
+warning$ -- 1
+while$ -- 70
+width$ -- 25
+write$ -- 262
+(There was 1 warning)

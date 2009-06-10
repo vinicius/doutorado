@@ -1,0 +1,5 @@
+Eh um escalonador em batch para cluster de grande porte.
+Utiliza ferramentas de alto nivel como a linguem de programacao Perl e banco de dados MySql.
+Prove heuristicas de escalonamento baseadas em filas de prioridade, agendamento, backfilling.
+Possui suporte para computacao em grade.
+

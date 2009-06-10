@@ -1,0 +1,19 @@
+Trabalhos recentes de Boeres e Rebello focam na implementação de um
+ferramenta chamada {\em Task Scheduling Testbed} através da qual é possível
+testar diferentes algoritmos de escalonamento. Essa ferramenta utiliza o
+GridSim para simular um ambiente de grade e oferece uma interface gráfica para
+a submissão de aplicações sintéticas, em forma de DAG's ({\em Directed Cyclic
+Graphs}). Através dessa interface é possível definir o comportamento do
+algoritmo de escalonamento através da configuração de dois escalonadores: um
+estático e um dinâmico. O estático atua antes da submissão, mapeando tarefas e
+recursos disponíveis de acordo com filas de prioridades e informações locais
+sobre os recursos da grade. O escalonador dinâmico consiste na realocação dos
+recursos através da reexecução do escalonador estático mas, nesse estágio, pode
+ser utilizada uma outra fila de prioridade.
+
+Através da ferramenta também é possível submeter e monitorar aplicações do tipo
+MPI em grades computacionais baseadas no {\em Globus Toolkit}. Aplicações MPI
+podem ser convertidas previamente para o formato de DAG's, permitindo que
+diferentes estratégias de escalonamento sejam observadas antes que a submissão
+seja efetivada. 
+

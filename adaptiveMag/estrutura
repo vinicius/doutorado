@@ -1,0 +1,22 @@
+- Título (provisório): Adaptive middleware for opportunistic grid: a mobile agent approach
+- Resumo
+- Introdução
+    . falar sobre middleware de grades oportunistas
+    . falar sobre agentes móveis
+- Trabalhos relacionados
+    . encontrar e descrever rapidamente trabalhos sobre adaptabilidade
+- MAG
+    . descrever arquitetura
+    . falar do JADE
+    . descrever mecanismos de tolerancia a falhas
+- Nossa proposta
+    . ajuste dinâmico no número de réplicas
+        .. verificar num de máquinas disponíveis e ajustar grau de replicação
+        .. máquinas tornam-se indisponíveis por falhas ou requisição de uso por usuários locais
+        .. a partir disso, criar ou excluir réplicas em execução
+    . simulações com taxa de submissões (tempo de chegada de novas submissões) que segue uma distribuição ???
+    . análise dos resultados
+- Resultados esperados
+    . um middleware adaptativo para grades oportunistas que se molde à quantidade de recursos disponíveis
+    . otimizar o uso de processamento ocioso, distribuindo-o de forma justa entre as aplicações submetidas
+- Referências

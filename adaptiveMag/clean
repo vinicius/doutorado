@@ -1,0 +1,7 @@
+rm article.aux
+rm article.bbl
+rm article.blg
+rm article.dvi
+rm article.log
+rm article.pdf
+rm article.ps

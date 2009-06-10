@@ -1,0 +1,453 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[a4paper]{article}
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{calc,alltt,amssymb,latexsym,graphicx}
+\usepackage[latin1]{inputenc}   % para os acentos
+\usepackage[brazil]{babel}      % para hifeniza\c{c}\~{a}o
+\usepackage{lscape}
+
+\usepackage{setspace}
+\setstretch{2.0}
+
+\setlength{\evensidemargin}{0.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{23cm}
+\setlength{\topmargin}{2.0cm}
+\setlength{\headheight}{0.0cm} 
+\setlength{\headsep}{0.0cm}
+
+
+%\usepackage{calc,alltt,amssymb,latexsym,graphicx}
+%\usepackage[latin1]{inputenc}   % para os acentos
+%\usepackage[brazil]{babel}      % para hifeniza\c{c}\~{a}o
+%\usepackage{lscape, doublespace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\centerline{Departamento de Ciência da Computação}
+\centerline{Instituto de Matemática e Estatística}
+\centerline{Universidade de São Paulo}
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\centerline{\Large\bf Escalonador Dinâmico e Inter-aglomerado}
+\bigskip
+\centerline{\Large\bf para Aplicações em Grades Oportunistas}
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\centerline{\large\bf Projeto de pesquisa apresentado como parte da} 
+\centerline{\large\bf documentação necessária para obtenção de bolsa de doutorado FAPESP}
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\bigskip\bigskip
+\centerline{Candidato: Vinicius Gama Pinheiro - vinicius@ime.usp.br}
+\centerline{Responsável: Prof. Alfredo Goldman - gold@ime.usp.br} 
+\centerline{São Paulo, Outubro de 2008}
+\thispagestyle{empty}
+%---------------------------------------------------------------------------------------------------
+\newpage
+\begin{abstract} 
+Grades oportunistas são grades computacionais que aproveitam o poder
+computacional ocioso de recursos não-dedicados para executar aplicações
+distribuídas e de alto desempenho. O escalonamento de aplicações nesse tipo de
+grade é uma área de pesquisa promissora e ainda repleta de desafios a serem
+transpostos. Os desafios mais comuns são relacionados à falta de informações
+sobre as aplicações submetidas e ao uso de recursos heterogêneos e
+não-dedicados. Em ambientes com essas características, o escalonamento precisa
+ser dinâmico e adaptativo, isto é, os recursos devem ser alocados no momento da
+criação das tarefas, possibilitando que somente os recursos mais adequados no
+momento sejam escolhidos. Nessas grades, esses recursos ficam espalhados em
+diversos domínios administrativos locais, sendo que, nesses domínios, esses
+recursos podem ser agrupados em aglomerados, como laboratórios científicos e
+intranets. Neste trabalho, propomos a implementação de um escalonador dinâmico
+e inter-aglomerado para grades oportunistas. Esse escalonador deve
+ser modular e adaptável, permitindo o uso de diferentes heurísticas de escalonamento
+como FIFO (fist-in-first-out), filas de processos com atribuição de
+prioridades, casamento de tarefas e reserva de máquinas, entre outras. O
+balanceamento ativo de carga entre recursos de aglomerados distintos também
+será um requisito obrigatório. As informações utilizadas pelos algoritmos de
+escalonamento serão obtidas através de uma interface com o serviço de
+monitoramento dos recursos da grade. Esse serviço, ainda com funcionalidades
+limitadas, está sendo desenvolvido por outros pesquisadores do nosso grupo. O
+nosso objetivo, ao final do projeto, é prover uma versão utilizável desse
+escalonador, que seja sensível às flutuações na disponibilidade de recursos
+como processadores, memórias, canais de comunicação e espaço em disco.
+\end{abstract}
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introdução}\label{sec:intro}
+
+% verificar ortografia
+% verificar italicos e tradução de termos
+% colocar mais referencias
+% subsections 
+
+%Grades oportunistas são grades computacionais que aproveitam o poder
+%computacional ocioso de recursos não-dedicados para executar aplicações
+%distribuídas e de alto desempenho. O escalonamento de aplicações nesse tipo de
+%grade é uma área de pesquisa promissora e ainda repleta de desafios a serem
+%transpostos. Os desafios mais comuns são relacionados à falta de informações
+%sobre as aplicações submetidas e ao uso de recursos heterogêneos e
+%não-dedicados. Em ambientes com essas características, o escalonamento precisa
+%ser dinâmico e adaptativo, isto é, os recursos devem ser alocados no momento da
+%criação das tarefas, possibilitando que somente os recursos mais adequados no
+%momento sejam escolhidos. Nessas grades, esses recursos ficam espalhados em
+%diversos domínios administrativos locais, sendo que, nesses domínios, esses
+%recursos podem ser agrupados em aglomerados, como laboratórios científicos e
+%intranets.
+
+%O surgimento de aplicações cada vez mais robustas e a necessidade de
+%executá-las em períodos menores motivaram diversos avanços tecnológicos
+%ocorridos nas últimas duas décadas. Neste contexto, o processamento paralelo de
+%aplicações é uma área de pesquisa emergente e promissora que há mais de uma
+%década vem sendo explorada pelas comunidades científicas e industriais para a
+%execução de aplicações que demandam alto poder computacional. Com a
+%popularização da Internet, o crescente avanço tecnológico e o barateamento de
+%recursos computacionais, as estações de trabalho e as redes que as conectam
+%conquistaram o seu espaço em uma área antes dominada somente pelos aglomerados
+%e pelos supercomputadores. O baixo custo e a possibilidade de compartilhar
+%recursos previamente disponíveis, como máquinas de redes locais, de uso
+%pessoal, ou até mesmo já obsoletas, são algumas das vantagens dessa abordagem.
+%Por outro lado, essas redes podem assumir diversas topologias e são geralmente
+%compostas por hardwares heterogêneos, diferentes versões de softwares e
+%protocolos de comunicação distintos. 
+% 
+%Neste cenário, surgem os sistemas de Computação em Grade ou, simplesmente,
+%grades computacionais ({\em computational grids}). Esses ambientes são
+%caracterizados pela possibilidade de se utilizar recursos dispersos
+%geograficamente, através de uma cooperação formal, para viabilizar a execução
+%de determinadas classes de aplicações. O termo {\em computational grid} é um
+%analogia com o sistema de rede elétrica ({\em power grid}), já que o objetivo
+%das grades computacionais é tornar o uso de recursos distribuídos tão simples
+%quanto ligar um aparelho na rede elétrica. 
+
+Grades computacionais compreendem uma complexa infra-estrutura composta por
+soluções integradas de hardware e software que permitem o compartilhamento de
+recursos distribuídos sob a responsabilidade de instituições distintas
+\cite{berman03}. Esses ambientes são alternativas atraentes para a execução de
+aplicações paralelas ou distribuídas que demandam alto poder computacional,
+tais como mineração de dados, previsão do tempo, biologia computacional, física
+de partículas, processamento de imagens médicas, entre outras \cite{berman03}.
+Essas aplicações paralelas são composta por diversas tarefas que, conforme o
+modelo de aplicação, podem se comunicar durante a fase de execução. 
+
+Existem diversos tipos de grades computacionais, classificadas de acordo com a
+sua finalidade \cite{foster03}. As grades de dados ({\em data grids}) são utilizadas para a
+pesquisa e armazenamento distribuído de grandes quantidades de dados. As grades
+de serviço ({\em service grids}) focam na interoperabilidade e são ambientes
+propícios para o compartilhamento sob demanda de serviços Web entre diversas
+instituições. Finalmente, as grades oportunistas fazem uso da capacidade
+computacional ociosa de recursos não-dedicados, como as estações de trabalho
+encontradas em laboratórios científicos, intranets e pequenas redes
+locais \cite{tanenbaum02}.
+
+Esses ambientes são altamente dinâmicos, com
+freqüente entrada e saída de nós, e devem compartilhar {\em hardwares} e {\em
+softwares} heterogêneos \cite{cirne06, goldchleger04}. O escalonamento de
+aplicações em ambientes de grades oportunistas consiste, essencialmente, em
+determinar quando, e em qual recurso, cada tarefa deve ser executada. Este
+mesmo processo ocorre no escalonamento de processos em ambientes dedicados,
+entretanto, em ambientes oportunistas, a disponibilidade dos recursos muda com o
+tempo. Diferentes funcionalidades e mecanismos podem ser utilizados pelo
+escalonador, como filas de processos com atribuição de prioridades, casamento
+de tarefas e reserva de máquinas, entre outros. Diversas políticas de
+escalonamento podem ser adotadas. Minimizar o tempo médio de execução,
+maximizar o {\em throughput} de tarefas executadas, reduzir o tempo máximo de
+espera ou efetuar uma divisão justa de recursos entre as tarefas (mais
+conhecido como {\em fairness}) são alguns exemplos conhecidos \cite{dutot2005}.
+
+O perfil dos usuários da grade, o modelo de arquitetura adotado, os tipos de
+aplicações contempladas e as variações no ambiente de execução são alguns dos
+fatores que devem determinar como o escalonador deve se comportar. Diante de
+tantas possibilidades, é desejável que o escalonador seja modular e adaptável,
+isto é, que o seu comportamento possa ser alterado facilmente e que novos
+comportamentos possam ser definidos e avaliados, tanto para estudo quanto para
+uso. 
+
+Neste trabalho, propomos a implementação de um escalonador para grades
+oportunistas modular e adaptável, que se ajuste ao diversos cenários de
+disponibilidade de recursos, isto é, que seja sensível às alterações nas
+variáveis do ambiente de execução, como quantidade de processadores livres,
+largura de banda disponível, espaço em disco, etc. 
+
+
+%grades oportunistas e escalonamento
+
+
+%falar de grades oportunistas e seus desafios
+%falar de escalonamento em grades oportunistas, citar nossa proposta justificando-a
+%falar dos objetivos do trabalho
+
+\subsection{Justificativa}\label{subsec:justificativa}
+%citar outros sistemas e pq não satisfazem nossas necessidades
+
+Grades oportunistas geralmente implementam algum mecanismo que detecta quando
+um recurso está ocioso, atribuindo-lhe uma ou mais tarefas para execução.
+Quando o dono do recurso requisita o uso exclusivo da sua máquina, isso
+possivelmente acarreta a interrupção dessas tarefas. Esse procedimento é
+conhecido como computação de melhor esforço ({\em best effort computing})
+\cite{capit2005}. Uma das principais preocupações do modelo de computação
+oportunista, portanto, é evitar degradação de desempenho para os donos das
+máquinas compartilhadas. Por outro lado, com a computação de melhor esforço, as
+tarefas submetidas pelo usuário da grade ficam sujeitas a interrupções,
+fato este que pode aumentar o tempo de execução das mesmas.
+
+Atualmente, nosso projeto conta com um módulo que monitora os recursos de uma grade
+oportunista. Esse módulo, denominado LUPA ({\em Local User Pattern Analyzer})
+ainda opera com funcionalidades limitadas (ainda não é possível ter uma visão
+centralizada de todos os recursos de um aglomerado, por exemplo), mas através
+dele é possível obter de cada recurso informações relativas ao seu padrão de
+uso, como uso de processador e memória. Neste projeto, propomos utilizar esse
+módulo através de uma interface com o nosso escalonador e, através da análise
+dos padrões de uso coletados, realizar o casamento entre recursos e tarefas.
+Dessa forma, as tarefas poderão ser executadas nos recursos mais adequados,
+reduzindo os riscos de interrupções indesejadas.
+
+\subsection{Objetivos}\label{sec:objetivos}
+%principais e secundarios
+
+O objetivo principal deste projeto é implementar um escalonador para grades
+oportunistas que seja modular, podendo esse, inclusive, ser utilizado como
+plataforma científica na investigação de algoritmos de escalonamento e análise
+de resultados.
+
+Dentre os objetivos específicos, podemos citar:
+
+\begin{enumerate}
+    \item \emph{Agendamento de Tarefas}: O usuário poderá definir um período
+    futuro no qual a sua aplicação deverá ser executada;
+
+    \item \emph{Escalonamento Adaptável}: Disponibilizar diferentes algoritmos
+    de escalonamento para a execução das aplicações, entre eles: FIFO ({\em
+    First-In First-Out}), {\em first-fit}, {\em best-fit}, atribuição de prioridades, etc;
+ 
+    \item \emph{Balanceamento de Carga}: Através de interações com o serviço de
+    monitoramento, as tarefas poderão ser alocadas nos recursos menos ocupados;
+
+    \item \emph{Escalonamento Inter-Aglomerado}: As aplicações poderão ser
+    alocadas em recursos de diferentes aglomerados.
+    
+\end{enumerate}
+ 
+
+\section{Trabalhos Correlatos}\label{sec:correlatos}
+
+Alguns escalonadores encontrados na literatura possuem características
+semelhantes ao escalonador que propomos. O {\em Distributed Queuing System}
+(DQS), o {\em Load Sharing Facility} (LSF), o {\em Portable Batch Scheduler}
+(PBS), o OAR, o SLURM e o {\em LoadLeveler} da IBM são alguns deles
+\cite{baker95}, mas nenhum deles foi projetado para escalonamento em
+ambientes oportunistas. A seguir, serão descritos alguns desses escalonadores.
+
+\subsection{PBS}
+
+O {\em Portable Batch Scheduler} (PBS) foi inicialmente desenvolvido para
+computadores paralelos de memória compartilhada de arquitetura SMP ({\em Shared
+Memory Multiprocessor}). O suporte para aglomerados foi adicionado
+posteriormente, mas ainda não contém funcionalidades importantes como, por
+exemplo, a submissão simultânea de tarefas em diversas máquinas. Por enquanto,
+essa função passa obrigatoriamente por um nó central. O escalonamento é
+realizado através de uma algoritmo que mescla {\em First-In First-Out} com uma
+regra de {\em first-fit}, ou seja, ele percorre a fila de tarefas e escalona a
+primeira que possa ser encaixada nos intervalos disponíveis dos recursos. Uma
+versão modificada utiliza o {\em Maui Scheduler}. Esse escalonador opta por
+escalonar primeiramente as tarefas de maior prioridade (invariavelmente as
+tarefas maiores) e, depois, procura escalonar as tarefas de menor prioridade
+nos intervalos de tempo ainda disponíveis \cite{bode00}. 
+
+\subsection{OAR}
+
+O OAR \cite{capit2005} é um escalonador em batch para aglomerados de grande
+porte e que utiliza ferramentas de alto nível como linguagem de programação
+Perl e banco de dados MySql para realizar casamento entre tarefas e recursos
+através de consultas SQL a um banco de dados centralizado. Ele é modular e
+provê heurísticas de escalonamento baseadas em filas de prioridade, agendamento
+e backfilling. Através de uma estensão, o OAR provê suporte para computação em
+grade, sendo que o gerenciamento das tarefas paralelas adota a política do
+melhor esforço, isto é, assim que uma máquina é requisitada pelo seu dono,
+todas as tarefas que estava sendo executavam nessa máquina, e as que dependem
+destas, são interrompidas. O OAR também possui um módulo de monitoramento da
+grade, denominado TakTuk \cite{martin03}. Todavia, esse módulo não faz análise
+de padrões de uso dos recursos.
+
+\subsection{SLURM}
+
+O SLURM ({\em Simple Linux Utility for Resource Management}) \cite{yoo03} é um
+escalonador de código aberto para aglomerados Linux de grande e pequeno porte.
+Com o foco na simplicidade, esse escalonador é altamente escalável, podendo
+controlar a execução de aplicação paralelas em aglomerados com mais de mil nós.
+Através do SLURM é possível definir requisitos para a execução de tarefas e ele
+também fornece ferramentas para submissão e monitoramento. O seu escalonador,
+contudo, é bastante simples, adotando uma política de FIFO ({\em First-In
+Fist-Out}). A despeito da sua escalabilidade, o SLURM não fornece suporte a
+computação em grade e, por ser desenvolvido somente para aglomerados Linux, não
+escalona tarefas em ambientes heterogêneos. 
+
+
+\section{Metodologia e Resultados Esperados} 
+
+Este projeto será realizado com os recursos do projeto InteGrade
+\cite{goldchleger04}. O projeto InteGrade mantém um conjunto de aglomerados,
+compostos por máquinas de professores e estudantes, dispersas em diversos
+laboratórios nas dependências do Instituto de Matemática e Estatística da
+Universidade São Paulo. Alguns desses aglomerados já executam o middleware de
+grade oportunista Integrade, mas a versão atual dispõe somente de um
+escalonador simplificado que executa um algoritmo Round-Robin para selecionar
+os recursos. Nesta seção, serão descritos as modificações propostas para o
+projeto InteGrade, e outras atividades no âmbito deste trabalho.
+
+
+\subsection{Agendamento de Tarefas} 
+
+O agendamento de tarefas para submissão futura será implementado através da
+inserção dessa funcionalidade no módulo de submissão do {\em middleware}
+InteGrade, o ASCT ({\em Application Submission and Control Tool}). Esse módulo
+já dispõe de uma interface para a submissão dos diversos modelos de aplicações
+contempladas pelo InteGrade: regulares, paramétricas, {\em Bulk
+Synchronous Parallel} (BSP) \cite{valiant90} e MPI ({\em Message Passing Interface}) \cite{mpif94}. A modificação
+proposta consiste em adicionar na interface a opção de dia e hora para a execução da
+aplicação. Quando o usuário submeter a aplicação, o gerenciador do aglomerado (no InteGrade,
+representado pelo GRM ou {\em Global Resource Manager}) armazenará o binário da
+aplicação em um repositório e as informações de execução em uma tabela de um
+banco de dados simplificado. As informações das aplicações agendadas serão
+consultadas periodicamente, para que, nas datas planejadas, as aplicações sejam
+executadas.
+
+\subsection{Escalonamento de Aplicações Inter-aglomerado} 
+
+Existem duas abordagens para realizar o escalonamento inter-aglomerado: entre
+aplicações e entre tarefas. Essas duas abordagens diferenciam-se pela
+granularidade, isto é, pela unidade de trabalho que é escalonada entre os
+aglomerados. A primeira é mais simples pois requer apenas que a requisição seja
+encaminhada de um aglomerado para outro. Nessa abordagem, todas as tarefas de
+uma aplicação sempre estarão confinadas em apenas um aglomerado. A segunda
+abordagem consiste em escalonar as tarefas de uma mesma aplicação em recursos
+de aglomerados distintos. Essa abordagem é mais complexa visto que, para
+implementá-la, é preciso lidar com problemas de comunicação que podem ocorrer
+devido à imprevisibilidade temporal da rede que conecta os aglomerados da
+grade. Processos que se comunicam entre si, como os encontrados nos modelo BSP
+e MPI, poderiam sofrer lentidão com os eventuais atrasos nos canais de
+comunicação. Dessa forma, pela sua simplicidade, em nosso projeto adotaremos
+inicialmente o escalonamento inter-aglomerado entre aplicações.
+
+Com o intuito de fazer com que aplicações possam ser encaminhadas de um aglomerado para
+outro, será necessário alterar o funcionamento do gerenciador do aglomerado.
+Como mencionado anteriormente, no InteGrade esse módulo é o GRM. Ele
+possui a função de se comunicar com seus aglomerados adjacentes, que consistem
+em um (ou nenhum) aglomerado pai e vários aglomerados filhos. Na implementação atual,
+quando não há recursos suficientes no aglomerado para que uma aplicação seja
+executada, a submissão é recusada. Na implementação que propomos, a submissão
+seria repassada para um dos aglomerados adjacentes.
+
+Atualmente, o serviço de monitoramento da grade, função exercida pelo módulo
+LUPA, opera individualmente em cada um dos recursos. Futuramente, esse módulo
+será estendido ao gerenciador do aglomerado para que, através de uma única
+consulta ao GRM, possamos obter informações sobre todos os recursos do
+aglomerado. Dessa maneira, será possível que cada aglomerado realize consultas
+aos aglomerados adjacentes e escolha o mais adequado para encaminhar as
+aplicações que ele não pôde executar. Para que essas consultas sejam
+realizadas, é preciso implementar uma interface entre os gerenciadores dos
+aglomerados. O objetivo dessa interface, portanto, é fazer com que cada
+aglomerado enxergue o seu vizinho como um conjunto de recursos.
+
+\subsection{Módulo de Escalonamento e Adição de Algoritmos}
+
+Como mencionado na seção~\ref{sec:intro}, no momento da alocação das tarefas,
+diversos algoritmos podem ser utilizados. Esses algoritmos podem utilizar
+informações fornecidas pelo LUPA para realizar casamento entre recursos e um
+conjunto de tarefas. Neste projeto, planejamos implementar alguns desses
+algoritmos como {\em first fit}, {\em best fit} e FIFO. Mas, com o objetivo de
+flexibilizar a alocação de recursos, novos algoritmos poderão ser definidos e
+adicionados à lista dos pré-existentes. Para viabilizar este passo, o algoritmo
+de escalonamento do GRM será modularizado para que, então, outros algoritmos
+sejam adicionados como opções.
+
+Durante todas as intervenções no código do InteGrade, utilizaremos o ambiente
+de desenvolvimento integrado Eclipse como ferramenta principal. Como
+ferramentas auxiliares, serão utilizados alguns diagramas UML (de seqüencia, de
+interação e de classe), simuladores de eventos discretos (e.g. GridSim) e
+outros aplicativos (i.e. Apache Ant, JConsole, etc). Para realizar os testes
+práticos das diversas modificações propostas (i.e. módulos e algoritmos de
+escalonamento), utilizaremos os recursos e laboratórios do projeto, em
+especial, as máquinas do Laboratório de Computação Paralela e Distribuída
+(LCPD) do Instituto de Matemática e Estatística da Universidade São Paulo.
+Nesses recursos, as versões modificadas do {\em middleware} poderão ser
+instaladas e avaliadas. 
+
+\subsection{Resultados Esperados} 
+
+Ao final do projeto, espera-se que o escalonador proposto esteja totalmente
+integrado ao {\em middleware} do projeto InteGrade, sendo possível, portanto,
+escalonar e agendar a execução de aplicações entre os diversos aglomerados que
+compõe o ambiente de grade. Através de testes e da avaliação dos resultados,
+pretende-se dotar o escalonador de um comportamento padrão que seja mais
+adequado para a maioria dos casos de submissão. 
+
+\section{Plano de Trabalho e Cronograma} 
+
+\begin{table}[htb]
+\centering
+\vspace{0.2cm}
+  \begin{tabular}{ l | c | c | c | c | c | c |}
+    \hline
+                                & \multicolumn{6}{c}{\bf Anos e Semestres} \\ \hline
+                                & \multicolumn{2}{c}{\bf 2009} & \multicolumn{2}{c}{\bf 2010} & \multicolumn{2}{c}{\bf 2011} \\ \hline
+{\bf Atividades}                & $1^o$   & $2^o$     & $1^o$ & $2^o$ & $1^o$ & $2^o$ \\ \hline
+Levantamento Bibliográfico      &    x    &           &       &       &       &       \\ \hline
+Agendamento de Aplicações       &         &     x     &       &       &       &       \\ \hline
+Escalonamento Inter-Aglomerado  &         &     x     &   x   &       &       &       \\ \hline
+Algoritmos de Escalonamento     &         &           &       &   x   &       &       \\ \hline
+Análise de Desempenho           &         &           &       &       &   x   &       \\ \hline
+Redação da Tese                 &         &           &       &   x   &   x   &   x   \\ \hline
+Qualificação                    &         &           &       &   x   &       &       \\ \hline
+Defesa                          &         &           &       &       &       &   x   \\ \hline
+    \hline
+  \end{tabular}
+\caption{Cronograma de atividades}
+\label{tabcontin}
+\end{table}
+
+
+\begin{enumerate}
+    \item \emph{Levantamento Bibliográfico}: Leitura de artigos e trabalhos correlatos;
+    \item \emph{Agendamento de Aplicações}: Modificações no módulo de submissão para o agendamento de aplicações;
+    \item \emph{Escalonamento Inter-Aglomerado}: Consiste em implementar a
+    interface entre os gerenciadores dos aglomerados. Nesse estágio, o
+    gerenciador do aglomerado já deve ser capaz de se comunicar com o módulo de
+    monitoramento dos recursos da grade; 
+    \item \emph{Algoritmos de Escalonamento}: Modularização do mecanismo de escalonamento e implementação dos algoritmos de escalonamento;
+    \item \emph{Análise de Desempenho}: Testes, simulações e interpretação dos resultados;
+    \item \emph{Redação da Tese}: Escrita da tese de doutorado;
+    \item \emph{Qualificação}: Exame de qualificação;
+    \item \emph{Defesa}: Defesa da tese de doutorado;
+\end{enumerate}
+
+Paralelamente à essas atividades, o pesquisador também se dedicará a outras
+atividades do programa de doutorado, como disciplinas obrigatórias, seminários
+e exames admissionais. O pesquisador também almeja a publicação de artigos
+científicos em eventos de caráter nacional e internacional.
+
+
+\begin{footnotesize}
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+\end{footnotesize}
+\end{document}

@@ -1,0 +1,125 @@
+\begin{thebibliography}{10}
+
+\bibitem{bode00}
+Brett Bode, David~M. Halstead, Ricky Kendall, Zhou Lei, and David Jackson.
+\newblock The portable batch scheduler and the maui scheduler on linux
+  clusters.
+\newblock In {\em ALS'00: Proceedings of the 4th annual Linux Showcase \&
+  Conference}, pages 27--27, Berkeley, CA, USA, 2000. USENIX Association.
+
+\bibitem{boeres04}
+Cristina Boeres, José~Viterbo Filho, and Vinod E.~F. Rebello.
+\newblock A cluster-based strategy for scheduling task on heterogeneous
+  processors.
+\newblock {\em Computer Architecture and High Performance Computing, Symposium
+  on}, 0:214--221, 2004.
+
+\bibitem{boeres04_2}
+Cristina Boeres and Vinod E.~F. Rebello.
+\newblock Easygrid: towards a framework for the automatic grid enabling of
+  legacy mpi applications: Research articles.
+\newblock {\em Concurr. Comput. : Pract. Exper.}, 16(5):425--432, 2004.
+
+\bibitem{capit2005}
+Nicolas Capit, Georges~Da Costa, Yiannis Georgiou, Guillaume Huard, Cyrille
+  Martin, Grégory Mounie, Pierre Neyron, and Olivier Richard.
+\newblock A batch scheduler with high level components.
+\newblock In {\em CCGRID '05: Proceedings of the Fifth IEEE International
+  Symposium on Cluster Computing and the Grid (CCGrid'05) - Volume 2}, pages
+  776--783, Washington, DC, USA, 2005. IEEE Computer Society.
+
+\bibitem{cirne06}
+Waldredo Cirne, Francisco Brasileiro, Nazareno Andrade, Lauro~B. Costa, Alisson
+  Andrade, Reynaldo Novaes, and Miranda Mowbray.
+\newblock Labs of the world, unite!!!
+\newblock {\em Journal of Grid Computing}, 4(3):225--246, September 2006.
+
+\bibitem{pbs}
+Altair Engineering.
+\newblock Portable batch scheduler.
+\newblock \url{http://www.pbsgridworks.com}.
+\newblock Last accessed on 26 Out, 2008.
+
+\bibitem{fedak01}
+Gilles Fedak, Cecile Germain, Vincent Neri, and Franck Cappello.
+\newblock Xtremweb: A generic global computing system.
+\newblock In {\em CCGRID '01: Proceedings of the 1st International Symposium on
+  Cluster Computing and the Grid}, page 582, Washington, DC, USA, 2001. IEEE
+  Computer Society.
+
+\bibitem{foster05:globus}
+Ian Foster.
+\newblock Globus toolkit version 4: Software for service-oriented systems.
+\newblock In {\em NPC 2005: IFIP International Conf. on Network and Parallel
+  Computing}, pages 2--13, Beijing, China, 2005.
+
+\bibitem{frey02:condorg}
+James Frey, Todd Tannenbaum, Miron Livny, Ian Foster, and Steven Tuecke.
+\newblock Condor-g: A computation management agent for multi-institutional
+  grids.
+\newblock {\em Cluster Computing}, 5(3), 2002.
+
+\bibitem{goldchleger04}
+Andrei Goldchleger, Fabio Kon, Alfredo Goldman, Marcelo Finger, and
+  Germano~Capistrano Bezerra.
+\newblock Integrade: object-oriented grid middleware leveraging the idle
+  computing power of desktop machines.
+\newblock {\em Concurrency - Practice and Experience}, 16(5):449--459, 2004.
+
+\bibitem{gropp98}
+William Gropp, Steven Huss-Lederman, Andrew Lumsdaine, Ewing Lusk, Bill
+  Nitzberg, William Saphir, and Marc Snir.
+\newblock {\em MPI: The Complete Reference}.
+\newblock MIT Press, 2th edition, 1998.
+
+\bibitem{henderson95}
+Robert~L. Henderson.
+\newblock Job scheduling under the portable batch system.
+\newblock In {\em IPPS '95: Proceedings of the Workshop on Job Scheduling
+  Strategies for Parallel Processing}, pages 279--294, London, UK, 1995.
+  Springer-Verlag.
+
+\bibitem{litzkow-icdcs:88}
+Michael Litzkow, Miron Livny, and Matt Mutka.
+\newblock {Condor - A} hunter of idle workstations.
+\newblock In {\em Proc. of the 8th Int. Conf. of Distributed Computing Systems
+  (ICDCS)}, pages 104--111, June 1988.
+
+\bibitem{martin03}
+Cyrille Martin and Olivier Richard.
+\newblock Algorithme de vol de travail appliqué au déploiement d'applications
+  parallèles.
+\newblock In {\em Soumis RenPar'15}, 2003.
+
+\bibitem{dutot2005}
+Grégory~Mounié Pierre-François~Dutot, Lionel~Eyraud and Denis Trystram.
+\newblock Scheduling on large scale distributed platforms: From models to
+  implementations.
+\newblock {\em International Journal of Foundations of Computer Science
+  (IJFCS)}, 16(2):217--237, 2005.
+
+\bibitem{neto05}
+Elizeu Santos-Neto, Walfredo Cirne, Francisco Brasileiro, and Aliando Lima.
+\newblock Exploiting replication and data reuse to efficiently schedule
+  data-intensive applications on grids.
+\newblock In {\em Job Scheduling Strategies for Parallel Processing}, LNCS
+  Series. Springer Berlin/Heidelberg, May 2005.
+
+\bibitem{thain05}
+Douglas Thain, Todd Tannenbaum, and Miron Livny.
+\newblock Distributed computing in practice: The condor experience. concurrency
+  and computation: Practice and experience.
+\newblock 17:2--4, 2005.
+
+\bibitem{valiant90}
+Leslie~G. Valiant.
+\newblock A bridging model for parallel computation.
+\newblock {\em Commun. ACM}, 33(8):103--111, 1990.
+
+\bibitem{yoo03}
+Andy~B. Yoo, Morris~A. Jette, and Mark Grondona.
+\newblock Slurm: Simple linux utility for resource management.
+\newblock In {\em Job Scheduling Strategies for Parallel Processing}, pages
+  44--60. Springer Berlin / Heidelberg, 2003.
+
+\end{thebibliography}
