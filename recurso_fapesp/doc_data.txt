@@ -1,0 +1,13 @@
+InfoKey: Creator
+InfoValue: Canon iR5570/iR6570             
+InfoKey: Producer
+InfoValue: www.adlibsoftware.com:EXS3700-Windows 2003:TNG
+InfoKey: Subject
+InfoValue: Image
+InfoKey: ModDate
+InfoValue: D:20091008014358-03'00'
+InfoKey: CreationDate
+InfoValue: D:20091008014358-03'00'
+PdfID0: 4ab2626004c00854886ae0000
+PdfID1: 4ab2626004c00854886ae0000
+NumberOfPages: 4

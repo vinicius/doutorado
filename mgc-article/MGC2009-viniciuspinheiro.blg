@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.6)
+The top-level auxiliary file: MGC2009-viniciuspinheiro.aux
+The style file: abbrv.bst
+Database file #1: bibliografia.bib
+Warning--to sort, need author or key in pham98
+Warning--empty author in pham98
+Warning--empty booktitle in hwang03
+You've used 26 entries,
+            2118 wiz_defined-function locations,
+            644 strings with 7932 characters,
+and the built_in function-call counts, 8773 in all, are:
+= -- 873
+> -- 386
+< -- 9
++ -- 158
+- -- 128
+* -- 533
+:= -- 1406
+add.period$ -- 89
+call.type$ -- 26
+change.case$ -- 143
+chr.to.int$ -- 0
+cite$ -- 29
+duplicate$ -- 344
+empty$ -- 721
+format.name$ -- 128
+if$ -- 1911
+int.to.chr$ -- 0
+int.to.str$ -- 26
+missing$ -- 16
+newline$ -- 140
+num.names$ -- 50
+pop$ -- 200
+preamble$ -- 1
+purify$ -- 116
+quote$ -- 0
+skip$ -- 259
+stack$ -- 0
+substring$ -- 466
+swap$ -- 97
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 104
+warning$ -- 3
+while$ -- 78
+width$ -- 28
+write$ -- 296
+(There were 3 warnings)

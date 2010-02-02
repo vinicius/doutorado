@@ -1,0 +1,40 @@
+#set terminal png transparent nocrop enhanced font arial 8 size 420,320 
+set terminal png nocrop enhanced size 420,320 notransparent xffffff x000000 x000000 x000000 x000000 x000000 x000000 x000000 x000000
+#set terminal postscript size 42,32 
+set output '49-55_scenario.png'
+#set output '49-55_scenario.eps'
+set key inside right top vertical Right noreverse enhanced autotitles box linetype -1 linewidth 1.000
+#set samples 300, 300
+#set title "" 
+set xlabel "Number of replicas"  
+set ylabel "Average execution time (in hours)" 
+#
+set auto x
+set yrange [1:400]
+set xrange [1:50]
+##set style data histogram
+#set style data linespoints 
+##set bars fullwidth
+##set style histogram errorbars 
+##set style fill empty border -1
+##set boxwidth 0.9
+set grid
+##set bars fullwidth
+set pointsize 2.0
+#set style line 1 lt rgb "blue" lw 3
+##plot "arq.dat" t "I.C (95%)" w errorb,                ""  smooth csplines t "cubic smooth"
+##plot "arq.dat" t "I.C (95%)" w errorb
+##plot 'arq.dat' using 1:xtic(1) ti col, '' u 2 ti col, '' u 3 ti col w errorb
+##plot 'arq.dat' using 2:5 title ' Cenario 1 ', '' u 3:6 title ' Cenario 2 ', '' u 4:7:xtic(1) title ' Cenario 3 '
+#plot './00-06_scenario.out' using 2:3 title ' Cenario 1 ', '' u 4:5:xtic(1) title ' Cenario 2 '
+
+#plot './00-06_scenario.out' using ($1*2):2:3:xtic(1) title 'I.C.(95%)' with yerrorbars, '' u ($1*2):4:5:xtic(1) title 'I.C.(95%)' with yerrorbars, \
+#'./00-06_scenario.out' using ($1*2):2:xtic(1) title 'Cenario 1' with linespoints, '' u ($1*2):4:xtic(1) title 'Cenario 2' with linespoints
+
+plot './49-55_scenario.out' using 2:3:4:xtic(1) title '' with yerrorbars, '' u 2:5:6:xtic(1) title '' with yerrorbars, \
+'./49-55_scenario.out' using 2:3:xtic(1) title ' Old model' with linespoints, '' u 2:5:xtic(1) title ' Unified Checkpoint' with linespoints
+
+#'./00-06_scenario.out' using 4:xtic(1) title ' Cenario 2 ' with yerrorbars
+#'./00-06_scenario.out' using 3:5xtic(1) title ' I.C.(95%) ' with yerrorbars 
+#'./00-06_scenario.out' u 3:5:xtic(1) title ' Cenario 2 ' with linespoints
+ 

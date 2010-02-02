@@ -1,0 +1,57 @@
+:: Relatório
+
+
+: Review 1
+
+- Explicitar mais o que já foi publicado e o que novo (talvez tirar mais conteúdo da parte inicial)
+
+- Race conditions in UniCheck (there is not race conditions because we only treat regular and parametric applications?)
+
+- What happens when the most advanced replicas goes down?
+    DONE: "This mechanism works even when the most advanced replica crashes, as its last checkpoint remains stored at the Stable Storage so that the new
+replica can resume from it."
+
+- Compare the new mechanism with the previous-generation checkpointing approach
+
+- investigate policy questions of how many replicas were optimal and what the optimal checkpointing strategies were
+
+
+: Review 2
+
+- the frequency and size of checkpoints and bandwidth
+
+- how typical the test case is of other applications that the authors expect to be running
+
+
+: Review 3
+
+- title and the introduction. There are several paragrphs about mobile agents. But in section 4 and 5 there is nothing (?) about mobile agents
+
+- section 1.1 does not tell to the reader the reader the real or specific contribution (section 4)
+
+- term "down-time" or downtime?
+    DONE: Term downtime is correct
+
+- section 4, last paragraph: "... it require ..."
+    DONE: Changed to "... it requires ..."
+
+- section 5, references are missing at the first paragraph: "... mostly borrowed from []"
+    DONE: References were placed
+
+- section 5: downtime is fixed or follows some distribution? not clear
+    DONE: It follows a distribution with fixed average. Text was corrected mentioning "average". 
+
+- section 5: "... times(at least 34 ...)"
+    DONE: space introducted between times and '(' 
+
+- section 6: "The middleware make ..."
+    DONE: Changed to "This middleware makes ..."
+
+
+: Review 4
+
+- good grammatical revision (help me Fabio :-)
+- related work section seems to miss a relevant reference to Condor
+- it could maybe fit in better if placed at the end of the paper, after the reader has understood the approach taken here
+- "Several works present the use of mobile agents [...] but most of them present characteristics more related to the middleware, not the application"
+- do not discsuss what exactly would be different if you tried to implement this approach in a different setting, without mobile agents

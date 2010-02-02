@@ -1,0 +1,54 @@
+1c1
+< ﻿\documentclass[times, 09pt, twocolumn]{article}
+---
+> \documentclass[times, 09pt, twocolumn]{article}
+12d11
+< 
+28c27
+< This paradigm can be used to implement mechanisms that enable the
+---
+> This paradigm can be used to implementmechanisms that enable the
+153c152
+< efficiently address the high dynamic of the opportunistic
+---
+> efficiently addres the high dynamic of the opportunistic
+475c474
+< periodically, increasing the communication traffic between provider nodes and
+---
+> periodically, increasing the comunication traffic between provider nodes and
+482c481
+< lost. This lost will only be recovered when one of the late replicas achieve
+---
+> losted. This lost will only be recovered when one of the late replicas achieve
+490c489
+< choose the most appropriately places to put these invocations into the code
+---
+> choose the most apropriately places to put these invocations into the code
+493c492
+< compares this value with the ones sent by the other replicas. Only the
+---
+> compares this value with the ones sended by the other replicas. Only the
+504c503
+< the replica running at host 3 crashes the MAG recovery mechanism took place
+---
+> the replica running at host 3 crashes the MAG recovery mechanism tooks place
+528c527
+< %able to adapt their selfs according to environment changes. To fulfill this gap
+---
+> %able to adapt theirselfs according to environment changes. To fulfill this gap
+545c544
+< running, these replicas are susceptible to failures related to intrinsic
+---
+> running, these replicas are susceptibles to failures related to intrinsic
+566c565
+< %also triggers the adjustments measures in order to add new replicas of the
+---
+> %also triggers the adjusments measures in order to add new replicas of the
+597c596
+< like academic laboratories, where machines are regularly turned off and
+---
+> like a academic laboratorie, where machines are regularly turned off and
+695c694
+< mechanism, which combines dynamic task replication, replica substitution and
+---
+> mechanism, wich combines dynamic task replication, replica substitution and

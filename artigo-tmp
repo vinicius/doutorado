@@ -1,0 +1,64 @@
+JPDC - Journal of Paralel and Distributed Computing
+
+Artigo: Gerencimaneto de execucão de aplicações no Middleware InteGrade
+
+Introducão - componentes
+
+Predição de disponibilidade de recursos do GUPA e LUPA
+
+Gerenciamento de execução: ExecutionManager
+    - aplicaçÕes BSP
+    - aplicações MPI
+
+Gereciamento dos dados
+    - tolerancia a falhas (oppstore)
+        .deteccao e recuperacao
+
+Experimentos (falta fazer)
+
+simular taxa de falhas e workload baseado em valores obtidos a partir de traces
+(disponibilizados pelo marcelo finger).
+
+
+
+:: objetivo
+efetividade
+
+:: metricas
+makespan
+
+:: mecanica
+:: resultados para coleta e analise
+:: aplicações
+
+Reviews:
+
+No meu ponto de vista, esta solicitação é a mais complicada de
+se atender: [Vinicius, Alfredo, Francisco] [R2] 
+
+"...the most exciting piece in my opinion has been left off, which is a
+comprehensive experimental characterization of how the complete InteGrade
+middleware works in practice (something the authors mention in the conclusion
+as upcoming work). In particular, I'd like to see how the types of application
+the authors refer to make good use of the richer collection of resources to be
+made available through this computational infrastructure." 
+
+Reforçando este ponto (e na minha opinião colocando de forma direta do que se deseja) temos o
+comentário do R3: [R3]
+
+"Supporting the execution of tightly-coupled parallel applications over shared
+resources exploited opportunistically is a challenging endeavor and a solution
+for this problem would bring great benefits to users that require to run such
+workloads. However, in its current form, the paper does not give concrete
+evidences that Integrade has solved the problem successfully. In fact, all
+evidences that are provided serve only to confirm secondary properties that are
+not by themselves sufficient to claim that tightly-coupled applications will
+successfully be executed by an Integrade-based grid infrastructure that
+assembles shared resources. Thus, I suggest the authors to conduct the required
+experiments to collect primary metrics (eg. the overhead of executing realistic
+tightly-coupled workloads on an Integrade-based grid, compared to running this
+workload on a service grid based on dedicated resources); it is only then that
+the tradeoff cost versus overhead may be well evaluated and the feasibility of
+Integrade for this kind of workload will be established."
+
+

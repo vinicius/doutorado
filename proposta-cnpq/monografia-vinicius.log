@@ -1,17 +1,11 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2007.12.7)  14 MAY 2009 00:46
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2009.6.9)  8 OCT 2009 02:15
 entering extended mode
  %&-line parsing enabled.
 **monografia-vinicius.tex
 (./monografia-vinicius.tex
 LaTeX2e <2005/12/01>
 Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, croatian, bulgarian, russian, ukrainian, czech, slovak, danish, dut
-ch, finnish, finnish, french, basque, french, german, ngerman, german, ngerman,
- greek, monogreek, ancientgreek, ibycus, hungarian, hungarian, italian, italian
-, latin, latin, mongolian, mongolian, norsk, norsk, coptic, esperanto, estonian
-, icelandic, indonesian, interlingua, romanian, serbian, slovenian, turkish, up
-persorbian, welsh, polish, polish, portuguese, portuguese, spanish, catalan, ga
-lician, spanish, catalan, galician, swedish, swedish, loaded.
+yphenation, loaded.
 (/usr/share/texmf-texlive/tex/latex/base/article.cls
 Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
 (/usr/share/texmf-texlive/tex/latex/base/size11.clo
@@ -105,10 +99,15 @@ File: babel.def 2005/11/23 v3.8h Babel common definitions
 \babel@savecnt=\count90
 \U@D=\dimen107
 )
+
+Package babel Warning: No hyphenation patterns were loaded for
+(babel)                the language `Portuguese'
+(babel)                I will use the patterns loaded for \language=0 instead.
+
+\l@portuges = a dialect from \language0
 \l@brazil = a dialect from \language\l@portuges 
 Package babel Info: Making " an active character on input line 145.
-))
-(/usr/share/texmf-texlive/tex/latex/graphics/lscape.sty
+)) (/usr/share/texmf-texlive/tex/latex/graphics/lscape.sty
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
 (/usr/share/texmf-texlive/tex/latex/setspace/setspace.sty
@@ -151,28 +150,23 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 \tf@toc=\write3
 \openout3 = `monografia-vinicius.toc'.
 
- [3] [4] [5]
-Overfull \hbox (1.30261pt too wide) in paragraph at lines 216--220
-[]\OT1/cmr/m/it/10.95 Escalonamento Adapt^^Savel\OT1/cmr/m/n/10.95 : Dis-po-ni-
-bi-li-zar di-fe-ren-tes al-go-rit-mos de es-ca-lo-na-mento para a execu^^Xc~ao
- []
-
-[6] [7] [8] [9] [10] [11] [12] [13]
+ [3] [4] [5] [6] [7]
+[8] [9] [10] [11] [12] [13]
 File: images/integrade3.eps Graphic file (type eps)
- <images/integrade3.eps> [14] [15] [16]
-[17] [18] (./monografia-vinicius.bbl
+ <images/integrade3.eps> [14] [15] [16] [17]
+[18] (./monografia-vinicius.bbl
 ! Undefined control sequence.
 l.40 \newblock \url
                    {http://www.pbsgridworks.com}.
 ? 
 [19]) [20] (./monografia-vinicius.aux) ) 
 Here is how much of TeX's memory you used:
- 1409 strings out of 93946
- 17513 string characters out of 1162066
- 71501 words of memory out of 1500000
- 4672 multiletter control sequences out of 10000+50000
+ 1413 strings out of 95087
+ 17540 string characters out of 1183279
+ 68881 words of memory out of 1500000
+ 4570 multiletter control sequences out of 10000+50000
  11777 words of font info for 45 fonts, out of 1200000 for 2000
- 743 hyphenation exceptions out of 8191
+ 28 hyphenation exceptions out of 8191
  25i,8n,24p,245b,266s stack positions out of 5000i,500n,6000p,200000b,5000s
 
-Output written on monografia-vinicius.dvi (20 pages, 58924 bytes).
+Output written on monografia-vinicius.dvi (20 pages, 58524 bytes).

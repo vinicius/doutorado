@@ -1,0 +1,4 @@
+mktexpk --mfmode ljfour --bdpi 8000 --mag 1+0/8000 --dpi 8000 cmr8
+mktexpk --mfmode ljfour --bdpi 8000 --mag 1+800/8000 --dpi 8800 cmbx10
+mktexpk --mfmode ljfour --bdpi 8000 --mag 1+0/8000 --dpi 8000 cmr8
+mktexpk --mfmode ljfour --bdpi 8000 --mag 1+800/8000 --dpi 8800 cmbx10
