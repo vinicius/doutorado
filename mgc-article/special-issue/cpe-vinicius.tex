@@ -1,0 +1,818 @@
+% cpedoc.tex V2.1, 19 September 2002
+
+\documentclass{cpeauth}
+
+%\usepackage[dvips,colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
+
+\begin{document}
+\def\cop{Copyright \copyright\ 2000 John Wiley \&\ Sons, Ltd.}
+
+%\CPE{1}{6}{00}{00}{2000} %for times fonts
+\CPE{1}{7}{00}{00}{2000}
+
+\runningheads{A.\ N.\ Other} {A demonstration of the
+\emph{CPE}\ class file}
+
+\title{Adaptive fault-tolerant mechanisms for opportunistic environments: a mobile agent approach\footnotemark[3]}
+
+\author{V.~G.~Pinheiro\corrauth\comma\footnotemark[2]}
+
+\longaddress{Journals Production Department, John Wiley \& Sons, Ltd,
+The Atrium, Southern Gate, Chichester,\\
+West Sussex, PO19~8SQ, U.K.}
+
+
+\corraddr{John Wiley \& Sons, Ltd, The Atrium, Southern Gate, Chichester,
+West Sussex, PO19~8SQ, U.K.}
+
+\footnotetext[2]{E-mail: vinicius@ime.usp.br}
+
+\footnotetext[3]{Please ensure that you use the most up to date class file,
+available from the CPE Home Page at\\
+\texttt{http://www.interscience.wiley.com/jpages/1532-0626}\\
+%\href{http://www.interscience.wiley.com/jpages/1532-0626}{\texttt{http://www.interscience.wiley.com/jpages/1532-0626}}\\
+}
+
+\cgsn{Publishing Arts Research Council}{98--1846389}
+
+\received{31 January 2000}
+\revised{19 September 2002}
+\noaccepted{}
+
+\begin{abstract}
+The mobile agent paradigm has emerged as a promising alternative to overcome
+the construction challenges of opportunistic grid environments.
+This model can be used to implement mechanisms that enable
+application execution progress even in the presence of failures, such as
+those presented by the MAG middleware (Mobile Agents for Grids). 
+MAG includes retrying, replication, and checkpointing as
+fault-tolerance techniques; they operate independently from
+each other and are not capable of detecting changes on resource availability.
+In this paper, we describe a MAG extension that is capable of migrating agents when 
+nodes fail, that optimizes application progress by keeping only the most advanced 
+checkpoint, and that migrates slow replicas.~\cop
+\end{abstract}
+
+\keywords{opportunistic grid; mobile agent; adaptive fault-tolerance; feedback system}
+
+\section{INTRODUCTION}
+
+Opportunistic grids are distributed environments built to leverage the
+computational power of idle resources geographically spread across different
+administrative domains. These environments comprise many characteristics such as
+high level of heterogeneity and large changes on resource availability. 
+
+In distributed systems such as opportunistic grids, failures can occur due to
+several factors, most of them related to resource heterogeneity and
+distribution. These failures together with the resource usage by its
+owners modify grid resource availability (i.e.,
+resources can be active, busy, offline, crashed, etc.). The middleware should
+be able to monitor and detect such changes, rescheduling 
+applications across the available resources and dynamically tuning the fault
+tolerance mechanisms to better adapt to the execution environment. 
+
+In this work, we implemented dynamic fault tolerance mechanisms for grid
+applications. These mechanisms compose a feedback control system
+\cite{steere99, goel99}, gathering and analyzing information about the execution
+progress and adjusting its behavior accordingly. To build these mechanisms we
+rely in the mobile agent paradigm~\cite{pham98}. Mobile agents are programs that can move
+from one resource to another in an autonomous way, carrying its data and
+execution state, resuming its execution at the destination. We argue that
+agents are suitable for constructing opportunistic grids due to intrinsic agent characteristics, 
+such as:
+
+\begin{enumerate}
+    \item \emph{Cooperation}: agents have the ability to interact and cooperate
+    with other agents; this can be explored for the development of complex
+    communication mechanisms among distributed application tasks.
+   
+    \item \emph{Autonomy}: agents are autonomous entities, meaning that their
+    execution goes on without any or with little intervention from the clients
+    that started them. This is a suitable model for submission and execution
+    of grid applications.
+  
+    \item \emph{Heterogeneity}: most mobile agent platforms can be executed
+    in heterogeneous environments, an important characteristic for better use
+    of computational resources across multi-organization environments.
+  
+    \item \emph{Reactivity}: agents can react to external events, such as
+    variations on resources availability.
+  
+    \item \emph{Mobility}: agents can migrate from one node to another,
+    moving part of the computation being executed, helping to balance the load on grid nodes.
+\end{enumerate}
+
+Since 2004, our research group has been using the agent paradigm
+for developing a grid software infrastructure, leading to the MobiGrid \cite{barbosa04} and MAG \cite{lopes05}
+projects  that are based on the
+InteGrade middleware \cite{goldchleger04}, which follows an opportunistic approach, where
+workstations idle computing power is used for executing
+computationally-intensive parallel applications.
+
+This work describes enhancements to the MAG middleware that
+address the high dynamism of opportunistic
+grids, managing effectively execution and resource allocation for both sequential and
+parametric applications. 
+
+In the next section, we present some of the related work. In
+Section~\ref{sec:arch}, we present the MAG architecture and its fault tolerance
+mechanisms. In Section~\ref{sec:adapt}, we describe the implementation
+of the dynamic replication and unified checkpointing mechanisms. We describe
+simulation results that assess our proposal in Section~\ref{sec:eval}.
+Finally, in the last section, we present our conclusions and future work.
+
+\section{RELATED WORK}
+
+There are several works that are related to this paper, some related to the
+systems giving support for parametric applications, some related to
+running long sequential applications on non-dedicated environments, and finally
+some works are related to the use of mobile agents on grid middleware.
+
+The most well known work was provided by research on extraterrestrial life on
+the SETI program~\cite{seti} where more attention were paid on security aspects
+and on the reliability of the results. More recently, the BOINC
+project~\cite{boinc} proposed an infrastructure allowing the execution of
+different programs which can be executed on volunteer computers spread around
+the world. There exist similar projects both with a fixed algorithm as
+Mersenne~\cite{mersenne}, and where different algorithms or challenges can be
+programmed~\cite{distributed}. However, on these projects the support for long
+running sequential applications is mostly restricted to local checkpoints (with
+few exception like~\cite{climate}, or the use of replication to guarantee the
+progress of the individual applications). Another bag-of-tasks approach is
+based on OurGrid~\cite{cirne06}, however the main focus is on dealing with
+the middleware infrastructure and not on the individual sequential
+applications.
+
+Several works deals with checkpointing techniques to guarantee the progress of
+sequential long running applications. One that is directly related to our
+work is the Grid-WFS framework~\cite{hwang03}. In this work the authors studied several approaches to
+deal with failures on machines. The handling techniques were: retrying, checkpointing,
+replication, and replication with checkpointing. They concluded that in grid
+environments with high down-time, as it can happen in opportunistic environments,
+the replication with checkpointing outperforms the other ones, using as comparison
+the lower completion time. The Condor project also provides some fault tolerance mechanisms
+to deal with instable and opportunistic environments: checkpointing and process
+migration. However, Condor does not perform task replication which would be
+used to improve application execution progress in the presence of host and
+network failures.
+
+Several works present the use of mobile agents on grid environments, some using
+opportunistic contexts (e.g. UWAgents~\cite{fukuda06}), but most of them
+presents characteristics more related to the middleware, not the application
+(e.g. ARMS~\cite{cao02} and the works published by Loke~\cite{loke03} and
+Martino and Rana~\cite{martino04}). Some of the mobile agent work were done
+within our project InteGrade~\cite{goldchleger04}. The first ideas on using
+mobile agents on an opportunistic grid appeared in~\cite{barbosa04} where an
+architecture based on Aglets~\cite{aglets} is first presented, and then
+evaluated with the use of several replicas in~\cite{barbosa05}. More recently a
+work based on the mobile agents framework Jade~\cite{jade} was also
+presented~\cite{lopes05,lopes06_2}, where there is application instrumentation,
+to provide transparent checkpointing and some work on fault tolerance.
+
+To the best of our knowledge this paper is the first one that specifically uses
+mobile agents combined with replication and checkpointing techniques, within a
+grid middleware, to provide dynamic fault tolerance mechanisms for sequential
+and parametric applications on opportunistic environments.
+
+\section{THE MIDDLEWARE INTEGRADE/MAG}\label{sec:arch}
+
+The InteGrade project involves the development of a grid middleware that
+leverages the idle computational power of desktop machines. 
+Its architecture follows a hierarchy in which each node can assume
+different responsibilities. The Cluster Manager is represented by one or more
+nodes that are responsible for managing that cluster and performing
+communication with other clusters. A Resource Provider node is the one that
+exports part of its resources, making them available to grid users. A User Node
+is one belonging to a grid user who submits grid applications. As we can see in
+Figure \ref{fig:integrade}, the InteGrade architecture follows a two-tier
+intra-cluster hierarchy combined with a inter-cluster network.
+
+\begin{figure}[th]
+\centering \includegraphics[width=.6\columnwidth]{images/integrade2_ieee.eps}
+\caption{InteGrade architecture}
+\label{fig:integrade}
+\end{figure}
+
+The MAG project \cite{lopes05} introduces the mobile agent technology as a new way
+of executing applications on InteGrade. Through MAG, the grid user can submit
+Java applications, not previously supported by the native InteGrade middleware. This is
+performed by dynamically loading sequential grid applications into mobile
+agents. MAG uses JADE (\emph{Java Agent Development Framework}) ~\cite{jade} as the agent
+platform to provide agent services such as communication and life cycle
+monitoring. 
+To avoid duplication of efforts, the MAG project was built on top of
+some InteGrade components: Global Resource Manager (GRM), Local Resource
+Manager (LRM), Application Repository (AR) and Application Submission and
+Control Tool (ASCT) (see Figure \ref{fig:integrade}). 
+The GRM is the main grid component and is executed
+in the Cluster Manager Nodes; it holds information about the registered
+LRMs and is able to dispatch tasks to them. The LRM is executed in
+each Resource Provider node; it loads the execution environment and
+executes tasks submitted to them. The AR provides a cluster repository to
+store application binaries. Finally, the ASCT provides a user interface for grid application submission,  
+monitoring, and collection of computation results.
+
+In addition, the MAG architecture also adds components that provides
+mobile agents capabilities and fault-tolerance mechanisms:
+
+\begin{enumerate}
+
+    \item The \emph{ExecutionManagementAgent (EMA)}  stores
+    information about current and past executions, such as current execution state
+    (accepted, running, finished), input arguments, and scheduled machines. This information
+    can be retrieved to restore applications to the point in which they were before
+    the failure.
+
+    \item The \emph{AgentHandler} runs on top of the LRMs and 
+    works as a proxy to the JADE agent platform, instantiating
+    MAGAgents for each requested execution.
+
+    \item The \emph{ClusterReplicationManagerAgent (CRM)} receives requests
+    for execution with replicas from the GRM and creates an ERM agent to handle the request.
+
+    \item The \emph{ExecutionReplicationManagerAgent (ERM)} distributes the replicas across the 
+    LRMs in the distributed system.
+
+    \item The \emph{StableStorage} agent receives the compressed
+    checkpoints, storing them in the file system and retrieving them when
+    prompted. This agent runs in the Cluster Manager node.
+
+    \item The \emph{MAGAgent} is the MAG main component; it
+    wraps the application, instantiates it, and catches its exceptions. It also controls application 
+    life cycle.
+
+    \item The \emph{AgentRecover} is created on demand by the MAGAgents  to recover
+    execution in the presence failures.
+
+\end{enumerate}
+
+\subsection{Fault-Tolerance in MAG\label{sec:faulttolerance}}
+
+The MAG fault-tolerance mechanisms can be combined to meet different scenarios of resource
+availability, resulting in 4 different strategies:
+
+\begin{enumerate}
+    \item \emph{Retrying}: every time the application fails (by throwing an exception), its agent migrates to another node.
+
+    \item \emph{Replication}: multiple application replicas are submitted
+for execution at the same time. When one of the replicas finishes, the others
+are discarded to avoid waste of resources. In case of failure,
+retrying is applied.
+   
+    \item \emph{Checkpointing}: the application periodically saves its execution
+state in a stable storage. In case of application failure, retrying is
+applied, but the execution is resumed from the most recent checkpoint.
+ 
+    \item \emph{Checkpointing with Replication}: each replica periodically saves
+its execution state in a stable storage. Retrying and resuming of execution is
+applied independently for each replica in the presence of failures.
+
+\end{enumerate}
+
+Currently, the MAG middleware supports only the submission of parametric (bag-of-tasks) and
+sequential Java applications. This is implemented by extending
+the {\tt MagApplication} class, wrapping the application code into a mobile agent and submitting
+it to the agent platform. 
+
+In the MAG middleware, the checkpoint mechanism is obtained through code
+instrumentation provided by the \emph{MAG/Brakes} framework~\cite{brakes00}.
+
+\section{IMPROVING MAG: TOWARDS AN ADAPTIVE MIDDLEWARE}\label{sec:adapt}
+
+As shown in Section \ref{sec:faulttolerance}, the MAG middleware supports
+multiple fault-tolerance techniques, but these techniques operate solely.
+Besides, they do not perform any automatic adjustments to adapt themselves
+to changes in resource availability. If a machine is turned off, for
+example, all the replicas that were executing on it are lost as MAG only
+detects failures at the application layer. These replicas are not replaced and
+the middleware does not make use of their checkpoints.
+
+Events such as network partitioning, crash failures, machine shutdowns,
+nodes joining the grid, and nodes leaving the grid, define the resource
+availability of the executing environment. Thus it is desirable that the middleware 
+include fault-tolerance mechanisms to adapt dynamically to these changes.
+
+\subsection{Unified Checkpoint}
+
+As explained previously, the MAG fault-tolerance mechanisms work
+independently from each other. This model does not scale well since it
+makes all replicas perform checkpointing periodically. 
+This increases the communication traffic between resource provider nodes and
+the stable storage, consuming more grid resources. 
+Another disadvantage of this model is related to resource
+heterogeneity: in a heterogeneous environment like opportunistic grids some
+replicas will advance its execution faster than the others. If the most
+advanced replica crashes in a way that MAG cannot detect, its latest checkpoint
+will not be used by the slower replicas and part of the execution will be
+lost. 
+
+\begin{figure}[th]
+\centering \includegraphics[width=0.6\columnwidth]{images/repCheckNovoFalha.eps}
+\caption{Unified Checkpoint model}
+\label{fig:repCheckNovo}
+\end{figure}
+
+To resolve this problem, we propose a mechanism named Unified Checkpoint. In
+this new model, the replicas periodically send information about their
+execution progress and only the most advanced replica is authorized to perform
+checkpointing. To enable this feature, the applications must invoke a method
+which increases a counter. It is in charge of the application programmer to
+choose the most appropriate places to put these invocations into the code
+since this is a very application-specific issue. When the replica hits a
+checkpoint, it sends only the value of the counter and the Stable Storage
+compares this value to the ones sent by the other replicas. Only the
+replica with the highest counter value will be requested to save the
+checkpoint. This model is depicted in Figure \ref{fig:repCheckNovo}.
+
+In Figure \ref{fig:repCheckNovo}, the replica running on host 2 is the most advanced one. When
+the replica running on host 3 crashes, the MAG recovery mechanism is executed
+and a new replica is created on host N and the Stable Storage is queried for the
+checkpoint. The checkpoint stored by the most advanced replica is the only
+option and so it is sent to the new replica, which resumes its execution
+from this advanced stage. 
+
+\subsection{Replica Replacement}
+
+Although the checkpointing and the replication of tasks now operate together to
+form a more integrated fault tolerance system, some events, such as machine crashes,
+may reduce the number of replicas in execution. Besides,
+it would be interesting to compare the replica counters to
+detect replicas that are slow and decide whether they should be moved 
+to another, hopefully faster, computing node.
+
+To accomplish that, we propose a feedback control system based on periodical
+analysis of resource availability. This system is depicted in Figure
+\ref{fig:feedback}.
+
+\begin{figure}[th]
+\centering \includegraphics[width=.7\columnwidth]{images/feedback.eps}
+\caption{Dynamic replication: a feedback system model}
+\label{fig:feedback}
+\end{figure}
+%
+Initially, the grid user submits an application to the grid. The application
+replicas are created and submitted for execution on the grid nodes. The number of
+replicas created will be equal to a fixed number defined by the user, but
+respecting a maximum value of replicas for each application\footnote{The
+maximum number of replicas allowed can be customized by grid
+administrators}. While running, these replicas are susceptible to failures
+related to intrinsic characteristics of opportunistic environments such as
+network partitions, machine shutdown, out-of-memory errors, etc. These
+failures reduce the number of replicas in execution and also modify the number
+of available resources. These changes are detected by the system that, after a
+period without getting responses from the crashed/offline nodes, updates the
+list of nodes that are still alive (and the new ones that have joined or
+rejoined the grid recently). Furthermore, during this time, some
+replicas may become delayed. Based on this information, new replicas are
+created and late ones are migrated to the new nodes. 
+The Unified Checkpoint will be present throughout this process, so new replicas will resume its execution
+from the checkpoint of the most advanced replica. This mechanism works even
+when the most advanced replica crashes, as its last checkpoint remains stored
+at the Stable Storage so that the new replica can resume from it.
+
+In the current version, the Stable Storage is a single point of failure for our
+system. This problem could be solve in the future by using the Jade agent
+replication mechanism to implement redundancy in the checkpoint storage.
+
+\section{EXPERIMENTS AND SIMULATIONS}\label{sec:eval}
+
+In this section, we present an event-based simulation in various scenarios,
+demonstrating the potential value of adding dynamic fault-tolerance mechanisms
+to MAG. Our analysis focuses on task execution times and resources consumption.
+To run our simulation scenarios, we use the GridSim toolkit~\cite{buyya02}. The
+parameters used in our simulation (mostly borrowed from \cite{plank98,
+beguelin97}) follow. 
+
+\begin{itemize}
+    \item \emph{Failure rate ($\lambda$)} is a random variable
+representing an arrival rate of failures governed by a Poisson distribution.
+TBF (time between two adjacent failures) is a random variable governed by an
+exponential distribution with MTBF representing the mean;
+    
+    \item \emph{Downtime (D)} is the average time following a failure of a
+task before it is up again, governed by an exponential distribution.
+   
+    \item \emph{Number of replicas (N)} is the number of copies of an
+application, with each running on different machines.  
+
+    \item \emph{Delay rate ($\gamma$)} represents the rate between the checkpoint
+counters of the most advanced replica and the other replicas. This rate is used
+to replace delayed replicas. 
+\end{itemize}
+
+We simulate a cluster environment with 100 heterogeneous machines connected by
+a 100Mbps network. The processing power of the resources were generated
+randomly from 800 to 1600 based on the SPECfp benchmark~\cite{spec06}.
+
+We used 3 parameters to model the tasks: number of instructions in MI (millions
+of instructions), binary size (in bytes) and output file size (in bytes). In
+our experiments we choose to simulate long running tasks and, to do so, we set
+the task length to $6.048 x 10^8$ MI. The binary size is 320 Kilobytes and the
+output file size is 15,6 Kilobytes. If we consider the most powerful machine
+allowed in our experiments, it would take 105 hours to execute a task of this
+length.
+
+We measured the task execution times to compare the performance of the proposed
+techniques against the old model. We used 2, 4, 8, and 16 replicas and fixed 60
+minutes as the MTBF value to obtain a $\lambda$ of 24 failures per
+day\footnote{That means: during a day, 24 failures will occur in average considering all
+machines of the environment}. The parameter $D$ was fixed to 30 minutes.
+These values were used to simulate a typical opportunistic environment to
+distributed processing like student laboratories, where machines are regularly
+turned off and rebooted. For each number of replicas, we performed 40 simulations,
+measuring task execution times, computing the arithmetic mean and
+the 95\% confidence interval with a t-Student distribution. We assumed that the
+application execution time is the execution time of the replica that finishes
+first. The results are plotted in Figure \ref{fig:adapt-mag} and Figure
+\ref{fig:adapt-mag-2}.
+
+\begin{figure}[th]
+\centering \includegraphics[width=.5\columnwidth]{images/49-55_scenario.eps}
+\caption{Performance comparison: Unified Checkpoint versus old model}
+\label{fig:adapt-mag}
+\end{figure}
+%
+%\begin{figure}[th]
+%\centering \includegraphics[width=.5\columnwidth]{images/42-48_scenario.eps}
+%\caption{Performance comparison: Unified Checkpoint versus old model (short tasks)}
+%\label{fig:adapt-mag-2}
+%\end{figure}
+
+First of all, it becomes clear that increasing the number of replicas results
+in shorter execution times in both strategies. But we can see a considerable
+gain in the total execution time when using the dynamic strategy presented in
+this paper. The potential advantage of adopting the Unified Checkpoint
+mechanism occurs independently of the number of replicas used in our
+simulation. In all cases, the Unified Checkpoint outperforms the old model
+obtaining better execution times (at least 34\% lower). This difference
+increases as the number of replicas increases, achieving its maximum
+performance improvement when 16 replicas were submitted (execution time 47\%
+lower). In the simulated scenarios, which are common in the field of
+High-Performance Computing, the amount of time saved when using the Unified
+Checkpoint varied between 95 and 107 hours.
+
+In the simulations that we ran, the replacement of delayed replicas occurred
+with $\gamma = 1/2$ since we stablished that no replica should be more than
+$50\%$ behind of the unified checkpoint. Although, for a better understanding
+of the replica replacement mechanism, we have made simulations with $\gamma =
+9/10$ to increase the number of substitutions. The Figure~\ref{fig:adapt-mag-3}
+shows the results for both scenarios of replica replacement in the Unified
+Checkpoint model. Those simulations were due in absence of failures since our
+goal was to observe only the replica replacement mechanism. Failures would
+activate the replica recovery mechanism and we wanted to avoid that.
+
+\begin{figure}[th]
+\centering \includegraphics[width=.5\columnwidth]{images/08-11_scenario.eps}
+\caption{Execution time for different delay rates}
+\label{fig:adapt-mag-3}
+\end{figure}
+
+The tables below show the average number of
+substitutions for each $\gamma$ used.
+%TODO remove Total line of tables below? Is it really significant? 
+
+\begin{table}
+%\caption{Average number of substitutions for long applications}
+\label{tab:numsub6}
+\centering
+  \begin{tabular}{ l | c | c | c | c |}
+    \hline 
+    \hline 
+    Num. replicas & $\gamma$: $0.5$  & Standard deviation& Rate: $0.9$  & Standard Deviation \\ \hline
+        2         &     2.0          &      0.16         &     10.5     &      0.60   \\ \hline
+        4         &     4.1          &      1.15         &     28.7     &      5.55   \\ \hline
+        8         &    10.3          &      3.51         &     68.1     &      19.22  \\ \hline
+       16         &    30.2          &      4.40         &    124.0     &      31.42  \\ \hline
+    {\em Total}   &   {\em 46.6}    &        -          & {\em 231.3}  &      -       \\ \hline
+  \end{tabular}
+\end{table}
+
+As we can see, that is no significant difference in the execution time,
+although the average number of substitutions with $/gamma = 0.9$ was higher for
+all number of replicas used. Changing the $/gamma$ to a value more closer to
+$1$ increased the number of substitutions substantially (between $400\%$ and
+$700\%$ of increase in the observed cases) but the results suggests that, from
+a certain point, increasing the number of replica substitutions don't leads to
+smallest execution times.
+
+%\begin{table}
+%%\caption{Average number of substitutions for short applications}
+%\label{tab:numsub7}
+%\centering
+%  \begin{tabular}{ l | c | c | c | c |}
+%    \hline 
+%    \hline 
+%    Num. replicas & $\gamma$: $0.5$  & Standard deviation& Rate: $0.9$  & Standard Deviation \\ \hline
+%        2        &     2.1     &      0.33       &     13.0       &      0  \\ \hline
+%         4        &     4.4     &      1.34       &     27.0       &      6.47  \\ \hline
+%         8        &    10.5     &      4.18       &     36.8       &      0.78  \\ \hline
+%         16       &    17.0     &      0.16       &     15.0       &      0  \\ \hline
+%    {\em Total}   &   {\em 34.0}    &        -          & {\em 91.8}  &      -       \\ \hline
+%  \end{tabular}
+%\end{table}
+
+
+\section{CONCLUSIONS}
+
+Grid middleware hides the complexity related to distribution and
+heterogeneity and must efficiently address issues such as management
+and allocation of distributed resources, dynamic task scheduling, fault
+tolerance, support for high scalability and great heterogeneity of software and
+hardware components, protection, and security. 
+
+The mobile agents paradigm are suitable for dealing with the complexity
+of building the grid software infrastructure due to its intrinsic
+characteristics, such as cooperation, autonomy, heterogeneity, reactivity, and
+mobility. In this work, we present the Unified Checkpoint
+mechanism, which combines dynamic task replication, replica substitution, and
+checkpointing to provide fault tolerance for sequential and parametric
+applications. We use the MAG middleware as the basis for implementing these
+mechanism. This middleware benefits from the mobile agent paradigm to
+encapsulate the applications submitted to the grid. 
+
+We demonstrated through our experiments that, in opportunistic environments,
+it is crucial to support dynamic fault tolerance mechanisms to
+achieve high performance as well as to make a better use of the available
+resources in a highly heterogeneous and unstable environment.
+
+Currently, we are investigating other self-optimization and adaptive mechanisms
+to add to our feedback system. We are currently measuring the benefits of increasing
+or decreasing the number of replicas dynamically according to three factors: failure rate
+of the execution environment, number of free resources, and amount of tasks to
+be scheduled. We are also investigating the impact of changing the
+checkpointing interval according to the failure rate and the size of the
+checkpoints to optimize application completion time. 
+
+
+%\section{THE ARTICLE HEADER INFORMATION}
+%The heading for any file using \textsf{cpeauth.cls} is like this;
+%for explanations see the \textit{Remarks}
+%on the next page.
+%
+%\begin{verbatim}
+%\documentclass{cpeauth}
+%\begin{document}
+%
+%\CPE{<first page>}{<last page>}{<volume>}{<issue>}
+%{<year (four digit)>}
+%
+%\runningheads{<Initials and surname>}{<Short title>}
+%
+%\received{<Date>}
+%\revised{<Date>}
+%\accepted{<Date>}
+%
+%%\noreceived{}
+%%\norevised{}
+%%\noaccepted{}
+%
+%\title{Minimal use of capitals, as in an ordinary sentence}
+%
+%%\author{}
+%
+%\longauthor{An Author\affil{1},
+%Someone Else\affil{2}\comma\corrauth\ and Perhaps Another\affil{1}}
+%
+%%\address{}
+%
+%\longaddress{\affilnum{1}\ First author's address
+%(in this example it is the same as the third author)\\
+%\affilnum{2}\ Second author's address}
+%
+%\corraddr{<Corresponding author's address
+%(the second author in this example)>}
+%
+%%\cgs{<Contract/grant sponsor name (no number)>}
+%%\cgsn{<Contract/grant sponsor name>}{<number>}
+%
+%\begin{abstract}
+%text
+%\end{abstract}
+%
+%\keywords{<list keywords>}
+%\end{verbatim}
+%
+%\proc{Remarks.}
+%\begin{enumerate}
+%\item[(i)]
+%In \verb"\runningheads", keep the short title and the authors' details
+%to no more than 50 characters each; use `\emph{et al.}' if more than three authors.
+%\item[(ii)]
+%\verb"\received{<Date>}" gives `date received';
+%use \verb"\noreceived{}" if this date is missing.
+%Use \verb"\revised" and \verb"\accepted" similarly.
+%\item[(iii)]
+%Note the use of \verb"\affil" and \verb"\affilnum"
+%to link names and addresses.
+%The author for correspondence is marked by \verb"\corrauth"
+%and \verb"\corraddr" is used to give that author's address,
+%which will be printed as a footnote, prefaced by `Correspondence to:'.
+%\item[(iv)] You will need to decide which of the commands \verb"\author{}",
+%\verb"\longauthor{}", \verb"\address{}" or \verb"\longaddress{}" are
+%appropriate. Choose the `long' forms when you are sure that the author
+%names and addresses will be typeset clear of the CPE graphic.
+%\item[(v)]
+%Use \verb"\cgs" for giving details of financial sponsors; alternatively
+%use \verb"\cgsn" if the grant number is also to be included.
+%These details will be printed as a footnote,
+%with `Contract/grant sponsor:' and `contract/grant number:'
+%inserted in the appropriate places.
+%\item[(vi)]
+%The abstract should be capable of standing by itself, in the absence
+%of the body of the article and of the bibliography.  It must therefore
+%contain no citations, and no \emph{numbered} equations.
+%\end{enumerate}
+
+%\section{THE BODY OF THE ARTICLE}
+%Articles are normally divided into sections
+%and possibly subsections and subsubsections.
+%The command \verb"\section*{<title>}" is used to start a section
+%and \verb"\subsection*{<title>}" a subsection.
+%Omitting the asterisks gives \emph{numbered} sections
+%(which are not usual in this journal,
+%though we use them in the present paper). % changed 1999-05-26
+%If an article is not divided into sections \verb"\nosections" is inserted
+%at the start of the first paragraph of the text.
+%
+%An Acknowledgement section is started with \verb"\acks" or \verb"\ack"
+%for \textit{Acknowledgements} or \textit{Acknowledgement}, respectively.
+%It must be placed just before the References.
+%
+%\subsection{Mathematics}
+%\textsf{cpeauth.cls} makes the full functionality of \AmS\/\TeX\ available.
+%We encourage the use of the \verb"align", \verb"gather" and \verb"multline"
+%environments for displayed mathematics.
+%
+%\subsection{Figures and tables}
+%\textsf{cpeauth.cls} uses the \textsf{graphicx} package for handling figures.
+%The default device driver is \textsf{dvips}.
+%You may need to change the option in the line
+%\begin{verbatim}
+%\RequirePackage[dvips]{graphicx}
+%\end{verbatim}
+%to match your system.
+%
+%Figures are called in as follows:
+%\begin{verbatim}
+%%\figcap{<caption width>}
+%\begin{figure}
+%\centering\includegraphics{<figure eps name>}
+%\caption{<Figure caption>}
+%\end{figure}
+%\end{verbatim}
+%
+%Where there is a turnover line in the caption the caption width should be reduced so as
+%to avoid the final line appearing too short (e.g.\ fewer than 30 characters).
+%The caption width can be set using \verb"\figcap{<caption width>}"
+%
+%For further details on how to size figures, etc,
+%with the \textsf{graphicx} package, see~\cite{Companion,KopkaDaly}.
+%If figures are available in an acceptable format (for example, .eps, .ps)
+%they will be used but a printed version should always be provided.
+%\mb
+%
+%The standard coding for a table is:
+%\begin{verbatim}
+%\tabcap{<table caption width>}
+%\begin{table}
+%\caption{<Table caption>}
+%\begin{center}
+%\begin{small}
+%\begin{tabular}{<table alignment>}
+%\toprule
+%<column headings>\\
+%\midrule
+%<table entries (separated by & as usual)\\
+%<table entries>\\
+%\bottomrule
+%\end{tabular}
+%\end{small}
+%\end{center}
+%\end{table}
+%\end{verbatim}
+%
+%The caption width needs to be set to the measure of the table. Where there
+%is a turnover line the caption width should be reduced so as to avoid the
+%final line appearing too short (e.g.\ fewer than 30 characters). The table
+%caption width is set using \verb"\tabcap{<table caption width>}".
+%\subsection{Cross-referencing}
+%The use of the \LaTeX\ cross-reference system
+%for figures, tables, equations and citations is encouraged
+%(using \verb"\ref{<name>}", \verb"\label{<name>}", \verb"\cite{<name>}").
+%
+%\subsection{Bibliography}
+%The normal commands for the start of the reference-list are:
+%\begin{verbatim}
+%\begin{thebibliography}{99}
+%\end{verbatim}
+%Each reference that follows is preceded by \verb"\bibitem{x-ref label}"
+%corresponding to \verb"\cite{x-ref label}" in the body of the article.
+%These labels are automatically replaced by numbers when the article
+%is typeset.  \verb"{99}" is the widest such number expected and determines
+%the width of the number column in the reference-list; it rarely needs changing.
+%
+%In references, titles of books and journals have capital initials
+%for important words, but titles of articles and electronic documents
+%are written like ordinary sentences, with minimal capitalisation.
+%For the general style of references, see the end of this document,
+%and study the \LaTeX\ code of the bibliography section.
+%
+%The reference list is completed with \verb"\end{thebibliography}"
+%and finally the whole article ends with \verb"\end{document}"
+%
+%\section{SUPPORT FOR \textsf{cpeauth.cls}}
+%We offer on-line support to participating authors.
+%Please contact us via e-mail at\\
+%\texttt{cpeauth-cls@wiley.co.uk}
+%
+%We would welcome any feedback, positive or otherwise, on your experiences of using \textsf{cpeauth.cls}.
+%
+%\section{COPYRIGHT STATEMENT}
+%Please  be  aware that the use of  this \LaTeXe\ class file is governed by the
+%following conditions:
+%
+%\subsection{Copyright}
+%Copyright \copyright\ 2000 John Wiley \& Sons, Ltd, The Atrium, Southern Gate, Chichester,
+%West Sussex, PO19~8SQ, U.K.  All rights reserved.
+%
+%\subsection{Rules of use}
+%This class file is made available for use by authors who wish to prepare an
+%article for publication in the journal \emph{Concurrency and Computation: Practice and Experience}
+%published by John Wiley \& Sons, Ltd.  The user may not exploit any part of
+%the class file commercially.
+%
+%This class file is provided on an \emph{as is}  basis, without warranties of any
+%kind, either express or implied, including but not limited to warranties of
+%title,   or  implied  warranties  of  merchantablility  or  fitness  for  a
+%particular purpose.  There will be no duty on the author[s] of the software
+%or  John Wiley \& Sons, Ltd to correct any errors or defects in the software.
+%Any  statutory  rights you may have remain unaffected by your acceptance of
+%these rules of use.
+%
+%\acks
+%This  class  file was developed by Sunrise Setting Ltd, Torquay, Devon, U.K.
+%John  Wiley  \& Sons, Ltd are indebted especially to Alistair Smith for his
+%work on both the class file and the present document.
+
+\begin{thebibliography}{99}
+
+
+
+\bibitem{Companion}                      % label for reference in the text
+Goossens M, Mittelbach F, Samarin A.     % This is how we write authors.
+\textit{The \LaTeX\ Companion.}          % Title of book.
+Addison-Wesley, 1994.                    % Publication details.
+
+\bibitem{KopkaDaly}                      % label for reference in the text
+Kopka H, Daly PW.                        % This is how we write authors.
+\textit{A Guide to \LaTeXe:
+  Document Preparation for Beginners and Advanced Users}
+  (2nd~edn).                             % Title (edition).
+Addison-Wesley, 1995.                    % Publication details.
+
+\bibitem{Lamport}                        % label for reference in the text
+Lamport L.                               % This is how we write authors.
+\textit{\LaTeX: A Document Preparation System}
+  (2nd~edn).                             % Title (edition).
+Addison-Wesley, 1994.                    % Publication details.
+
+% The remainder of this bibliography is for illustration only.
+% Another citation of a book:
+\bibitem{Elachi}                         % label for reference in the text
+Elachi C.                                % This is how we write authors.
+\textit{Introduction to the Physics and Techniques of Remote Sensing}
+(1st edn), vol. 1.                        % Title (edition) volume.
+Wiley: New York, 1987;                   % Publication details;
+1--10.                                   % pages (if desired).
+
+% Citation of an article in a book:
+\bibitem{HuangKintala}                   % label for reference in the text
+Huang Y, Kintala C.                      % This is how we write authors.
+A software fault tolerance platform.     % Article title.
+                           % --minimal use of caps, as in an ordinary sentence
+In \textit{Practical Reusable UNIX Software,} % Book title
+                           % --here we do use caps for important words
+Krishnamurthy B (ed.).                   % Author or editor.
+Wiley: New York, 1995;                   % Publication details;
+111.                                     % pages (if desired).
+
+% Citation of journal-article:
+\bibitem{Sorting}                        % label for reference in the text
+Bentley JL, McIlroy MD.                  % This is how we write authors.
+Engineering a sort function.             % Article title.
+                           % --minimal use of caps, as in an ordinary sentence
+\textit{Software---Practice and Experience} 1993;  % Journal title and year;
+                           % --here we do use caps for important words
+\textbf{23}(11):1249--1265.              % Volume, issue, pages.
+
+% Citation of electronic item:
+\bibitem{Interconnect}                   % label for reference in the text
+Interconnect Performance page.           % Title of electronic document.
+                           % --minimal use of caps, as in an ordinary sentence
+      % ``Interconnect Performance'' is the name of a company, hence the cap P
+\\    % here we force a new line, for else the URL runs into the right margin
+http://www.scl.ameslab.gov/Projects/ClusterCookbook/icpef.html        % URL
+[10 February 1999].                      % date you inspected this document.
+
+\end{thebibliography}
+\end{document}
